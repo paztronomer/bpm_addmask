@@ -264,7 +264,19 @@ def aux_main():
     t_i = 'Running {0} processes in parallel'.format(NPROC)
     logging.info(t_i)
     # Load bit definition
-    load_bitdef(d1=argu.ini)
+    if (argu.ini is not None):
+        load_bitdef(d1=argu.ini)
+        aux_dic = dict(zip(BITDEF_INI.values(), BITDEF_INI.keys()))
+        if (BIT in BITDEF_INI.values()):
+            t_i = '{1}={0}'.format(BIT, aux_dic[BIT])
+            t_i += ' will be added to the masked region'
+            logging.info(t_i)
+        else:
+            t_w = 'Bit {0} not contained on bit definition'.format(BIT)
+            logging.warning(t_w)
+    else:
+        t_w = 'No bit definition was input to corroborate BIT existence'
+        logging.warning(t_w)
     # Load mask of region
     msk = load_msk01(argu.reg).astype(bool)
     # Open BPMs, store objects in a list
